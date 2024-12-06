@@ -3,7 +3,7 @@
   "name": "Electric Usage Downloader",
   "version": "1.0.0",
   "documentation": "https://github.com/willcbaker/ha-electric-usage-downloader",
-  "requirements": ["beautifulsoup4==4.9.3", "aiohttp==3.11.10"],
+  "requirements": ["beautifulsoup4==4.9.3", "aiohttp"],
   "dependencies": [],
   "codeowners": ["@willcbaker"],
   "iot_class": "cloud_polling",
