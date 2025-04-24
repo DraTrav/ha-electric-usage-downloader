@@ -20,7 +20,7 @@ class ElectricUsageSensor(CoordinatorEntity, SensorEntity):
     def __init__(self, coordinator):
         super().__init__(coordinator)
         self._attr_name = "Electric Usage"
-        self._attr_unit_of_measurement = ENERGY_KILO_WATT_HOUR
+        self._attr_unit_of_measurement = UnitOfEnergy
         self._attr_unique_id = "electric_usage"
 
     @property
