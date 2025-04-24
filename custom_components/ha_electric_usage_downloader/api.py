@@ -60,7 +60,7 @@ class ElectricUsageAPI:
             timestamp_ms = int(yesterday_midnight.timestamp() * 1000)
 
 
-            url_query = f"start={timestamp_ms}&end={timestamp_ms}&systemOfRecord=UTILTIY&timeFrame=DAILY&usageType=KWH"
+            url_query = f"start={timestamp_ms}&end={timestamp_ms}&systemOfRecord=UTILTIY&useOpenId=false&timeFrame=DAILY&industry=ELECTRIC&includeInactive=false&usageType=KWH"
             base64_url = base64.b64encode(url_query.encode()).decode()
             fixed_usage_url = self.usage_url[:-5]
             _LOGGER.debug(fixed_usage_url)
