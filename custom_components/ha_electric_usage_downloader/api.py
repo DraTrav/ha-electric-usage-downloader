@@ -82,11 +82,11 @@ class ElectricUsageAPI:
         """Parse the electric usage data from the HTML soup."""
         try:
             elements = soup.find_all(class_='responsive-padding-10 half-flex-columns')
-            total_element = elements[9] if len(elements) >= 10 else None
+            total_element = elements[9]
             span = total_element.find("span")
 
 
-            usage_value = span.text.strip()
+            total_element = span.text.strip()
             return {"usage": float(usage_value)}
         except Exception as e:
             _LOGGER.error(f"Error parsing usage data: {e}")
