@@ -6,7 +6,7 @@ from .const import DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_LOGIN_URL = "https://pec.smarthub.coop/Login.html"
-DEFAULT_USAGE_URL = "https://pec.smarthub.coop/ui/#/usageExplorer"
+DEFAULT_USAGE_URL = "https://pec.smarthub.coop/ui/#/usageExplorer?"
 
 class ElectricUsageConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle the config flow for Electric Usage Downloader."""
