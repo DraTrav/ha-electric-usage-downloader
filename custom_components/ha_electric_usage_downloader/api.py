@@ -1,6 +1,9 @@
 import aiohttp
 from bs4 import BeautifulSoup
 import logging
+from datetime import datetime, timedelta
+import base64
+
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -47,7 +50,20 @@ class ElectricUsageAPI:
             "User-Agent": "Mozilla/5.0"
         }
         try:
-            async with self.session.get(self.usage_url, cookies=self.cookies, headers=headers) as response:
+            # Get yesterday's date
+            yesterday = datetime.now() - timedelta(days=1)
+
+            # Set the time to midnight (00:00:00)
+            yesterday_midnight = datetime(yesterday.year, yesterday.month, yesterday.day, 0, 0, 0)
+
+            # Convert to timestamp in milliseconds
+            timestamp_ms = int(yesterday_midnight.timestamp() * 1000)
+
+
+            url_query = f"start={timestamp_ms}&end={timestamp_ms}&systemOfRecord=UTILTIY&timeFrame=DAILY&usageType=KWH"
+            base64_url = base64.b64encode(url_query.encode()).decode()
+
+            async with self.session.get(f"{self.usage_url}?{base64_url}", cookies=self.cookies, headers=headers) as response:
                 if response.status != 200:
                     _LOGGER.error(f"Failed to fetch usage data: {response.status}")
                     return None
@@ -65,7 +81,12 @@ class ElectricUsageAPI:
     def _parse_usage_data(self, soup):
         """Parse the electric usage data from the HTML soup."""
         try:
-            usage_value = soup.find("td", class_="highcharts-tooltip").get_text()
+            elements = soup.find_all(class_='responsive-padding-10 half-flex-columns')
+            total_element = elements[9] if len(elements) >= 10 else None
+            span = total_element.find("span")
+
+
+            usage_value = span.text.strip()
             return {"usage": float(usage_value)}
         except Exception as e:
             _LOGGER.error(f"Error parsing usage data: {e}")
