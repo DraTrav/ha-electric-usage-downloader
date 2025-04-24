@@ -60,7 +60,7 @@ class ElectricUsageAPI:
             timestamp_ms = int(yesterday_midnight.timestamp() * 1000)
 
 
-            url_query = f"start={timestamp_ms}&end={timestamp_ms}&systemOfRecord=UTILTIY&useOpenId=false&timeFrame=DAILY&industry=ELECTRIC&includeInactive=false&usageType=KWH"
+            url_query = f"start={timestamp_ms}&end={timestamp_ms}&systemOfRecord=UTILTIY&timeFrame=DAILY&usageType=KWH"
             base64_url = base64.b64encode(url_query.encode()).decode()
             fixed_usage_url = self.usage_url[:-5]
             _LOGGER.debug(fixed_usage_url)
@@ -70,7 +70,7 @@ class ElectricUsageAPI:
                 if response.status != 200:
                     _LOGGER.error(f"Failed to fetch usage data: {response.status}")
                     return None
-                await asyncio.sleep(5)
+
                 html_content = await response.text()
                 soup = BeautifulSoup(html_content, "html.parser")
 
