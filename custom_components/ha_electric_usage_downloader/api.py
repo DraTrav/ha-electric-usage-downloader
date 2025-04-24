@@ -4,6 +4,7 @@ import logging
 from datetime import datetime, timedelta
 import base64
 import re
+import requestes_html
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -70,7 +71,7 @@ class ElectricUsageAPI:
                 if response.status != 200:
                     _LOGGER.error(f"Failed to fetch usage data: {response.status}")
                     return None
-
+                await asyncio.sleep(15)
                 html_content = await response.text()
                 soup = BeautifulSoup(html_content, "html.parser")
 
