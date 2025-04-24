@@ -64,6 +64,7 @@ class ElectricUsageAPI:
             base64_url = base64.b64encode(url_query.encode()).decode()
 
             async with self.session.get(f"{self.usage_url}?{base64_url}", cookies=self.cookies, headers=headers) as response:
+                _LOGGER.debug(f"{self.usage_url}?{base64_url}")
                 if response.status != 200:
                     _LOGGER.error(f"Failed to fetch usage data: {response.status}")
                     return None
@@ -82,6 +83,7 @@ class ElectricUsageAPI:
         """Parse the electric usage data from the HTML soup."""
         try:
             text = soup.get_text()
+            _LOGGER.debug(f"{text}")
             match = re.search(r"Total\s*\$?([0-9]+\.[0-9]{2})", text)
 
             usage_value = match.group(1)
