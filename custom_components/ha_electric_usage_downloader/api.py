@@ -62,8 +62,10 @@ class ElectricUsageAPI:
 
             url_query = f"start={timestamp_ms}&end={timestamp_ms}&systemOfRecord=UTILTIY&timeFrame=DAILY&usageType=KWH"
             base64_url = base64.b64encode(url_query.encode()).decode()
+            fixed_usage_url = self.usage_url[:-5]
+            _LOGGER.debug(fixed_usage_url)
 
-            async with self.session.get(f"{self.usage_url[:-5]}{base64_url}", cookies=self.cookies, headers=headers) as response:
+            async with self.session.get(f"{fixed_usage_url}{base64_url}", cookies=self.cookies, headers=headers) as response:
                 _LOGGER.debug(f"{self.usage_url[:-5]}?{base64_url}")
                 if response.status != 200:
                     _LOGGER.error(f"Failed to fetch usage data: {response.status}")
