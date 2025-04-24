@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import logging
 from datetime import datetime, timedelta
 import base64
-
+import re
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -81,12 +81,10 @@ class ElectricUsageAPI:
     def _parse_usage_data(self, soup):
         """Parse the electric usage data from the HTML soup."""
         try:
-            elements = soup.find_all(class_='responsive-padding-10 half-flex-columns')
-            total_element = elements[9]
-            span = total_element.find("span")
+            text = soup.get_text()
+            match = re.search(r"Total\s*\$?([0-9]+\.[0-9]{2})", text)
 
-
-            total_element = span.text.strip()
+            usage_value = match.group(1)
             return {"usage": float(usage_value)}
         except Exception as e:
             _LOGGER.error(f"Error parsing usage data: {e}")
