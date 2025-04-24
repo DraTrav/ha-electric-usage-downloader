@@ -71,7 +71,7 @@ class ElectricUsageAPI:
                 if response.status != 200:
                     _LOGGER.error(f"Failed to fetch usage data: {response.status}")
                     return None
-                await asyncio.sleep(15)
+                await asyncio.sleep(5)
                 html_content = await response.text()
                 soup = BeautifulSoup(html_content, "html.parser")
 
